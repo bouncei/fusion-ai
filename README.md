@@ -65,6 +65,7 @@ We welcome contributions to improve FusionAI! To get started, please fork the re
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+<!--
 ## Acknowledgements
 
 We would like to thank the following organizations and open-source projects for their support and contributions:
@@ -72,7 +73,7 @@ We would like to thank the following organizations and open-source projects for 
 - [OpenAI](https://www.openai.com)
 - [TensorFlow](https://www.tensorflow.org)
 - [Node.js](https://nodejs.org)
-- [Docker](https://www.docker.com)
+- [Docker](https://www.docker.com) -->
 
 ## Contact
 
