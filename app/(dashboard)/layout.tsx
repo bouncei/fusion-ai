@@ -10,7 +10,8 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
         <Sidebar />
       </div>
       <main className="md:pl-72">
-        <Navbar /> {children}
+        <Navbar />
+        {children}
       </main>
     </div>
   );

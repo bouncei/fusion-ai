@@ -108,7 +108,7 @@ const ConversationPage = () => {
             <Empty label="No conversation started." />
           )}
           <div className="flex flex-col-reverse gap-y-4">
-            {messages.map((message: any) => (
+            {messages.reverse().map((message: any) => (
               <div
                 key={message.content}
                 className={cn(
