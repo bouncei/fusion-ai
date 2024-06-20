@@ -19,7 +19,7 @@ export async function POST(req: Request) {
 
 
         if (!prompt) {
-            return new NextResponse("Prompt is required", { status: 400 })
+            return new NextResponse("Prompt is required(min: 2 characters)", { status: 400 })
         }
 
         const input = {
