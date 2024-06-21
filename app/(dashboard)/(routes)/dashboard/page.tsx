@@ -11,7 +11,7 @@ const tools = [
     icon: MessageSquare,
     color: "text-violet-500",
     bgColor: "bg-violet-500/10",
-    href: "/conversations",
+    href: "/conversation",
   },
 
   {
