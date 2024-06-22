@@ -29,7 +29,7 @@ export const connect = async () => {
 
     cached.promise = cached.promise ||
         mongoose.connect(MONGODB_URI, {
-            dbName: "fusion-ai",
+            dbName: "fusion_db",
             bufferCommands: false,
             connectTimeoutMS: 30000
 

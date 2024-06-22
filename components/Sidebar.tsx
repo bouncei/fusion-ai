@@ -1,14 +1,4 @@
 "use client";
-
-import {
-  Code,
-  ImageIcon,
-  LayoutDashboard,
-  MessageSquare,
-  Music,
-  Settings,
-  VideoIcon,
-} from "lucide-react";
 import { Montserrat } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,61 +6,16 @@ import React from "react";
 
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import FreeCounter from "./FreeCounter";
+import { TOOLS } from "@/constants";
+
+interface SideBarProps {
+  apiLimitCounts: number;
+}
 
 const montserrat = Montserrat({ weight: "600", subsets: ["latin"] });
 
-const routes = [
-  {
-    label: "Dashboard",
-    href: "/dashboard",
-    icon: LayoutDashboard,
-    color: "text-sky-500",
-  },
-
-  {
-    label: "Conversation",
-    href: "/conversation",
-    icon: MessageSquare,
-    color: "text-violet-500",
-  },
-
-  {
-    label: "Image Generation",
-    href: "/image",
-    icon: ImageIcon,
-    color: "text-pink-500",
-  },
-
-  {
-    label: "Video Generation",
-    href: "/video",
-    icon: VideoIcon,
-    color: "text-orange-500",
-  },
-
-  {
-    label: "Music Generation",
-    href: "/music",
-    icon: Music,
-    color: "text-red-500",
-  },
-
-  {
-    label: "Code Generation",
-    href: "/code",
-    icon: Code,
-    color: "text-green-500",
-  },
-
-  {
-    label: "Settings",
-    href: "/settings",
-    icon: Settings,
-    color: "",
-  },
-];
-
-const Sidebar = () => {
+const Sidebar = ({ apiLimitCounts }: SideBarProps) => {
   const pathname = usePathname();
   return (
     <div className="space-y-4 py-4 flex flex-col h-full bg-[#111827] text-white">
@@ -86,7 +31,7 @@ const Sidebar = () => {
         </Link>
 
         <div className="space-y-1">
-          {routes.map((route) => (
+          {TOOLS.map((route) => (
             <Link
               href={route.href}
               key={route.href}
@@ -105,6 +50,8 @@ const Sidebar = () => {
           ))}
         </div>
       </div>
+
+      <FreeCounter apiLimitCounts={apiLimitCounts} />
     </div>
   );
 };

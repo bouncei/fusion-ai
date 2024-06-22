@@ -15,7 +15,7 @@ datasource db {
 }
 
 model UserApiLimit {
-  id        String   @id @default(cuid()) @map("_id") @db.ObjectId
+  id        String   @id @default(cuid()) @map("_id")
   userId    String   @unique
   count     Int      @default(0)
   createdAt DateTime @default(now())
