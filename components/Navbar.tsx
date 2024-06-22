@@ -14,11 +14,16 @@ import {
 import { Button } from "./ui/button";
 import Link from "next/link";
 
-const Navbar = () => {
+interface NavbarProps {
+  apiLimitCounts: number;
+}
+
+const Navbar = ({ apiLimitCounts }: NavbarProps) => {
   const { setTheme } = useTheme();
+
   return (
     <div className="flex items-center bg-opacity-70  p-4">
-      <MobileSidebar />
+      <MobileSidebar apiLimitCounts={apiLimitCounts} />
 
       <div className="w-full space-x-2 flex justify-end">
         <DropdownMenu>

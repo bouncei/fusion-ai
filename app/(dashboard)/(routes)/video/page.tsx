@@ -25,8 +25,11 @@ import { Loader } from "@/components/Loader";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/UserAvatar";
 import BotAvatar from "@/components/BotAvatar";
+import { toast } from "sonner";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 const VideoPage = () => {
+  const { onOpen } = useProModal();
   const router = useRouter();
 
   const [video, setVideo] = useState<string>();
@@ -49,7 +52,10 @@ const VideoPage = () => {
 
       form.reset();
     } catch (error: any) {
-      // TODO: OPEN PRO MODEL
+      if (error?.response?.status === 403) {
+        toast.error(error.response.data);
+        onOpen();
+      }
       console.log(error);
     } finally {
       router.refresh();
