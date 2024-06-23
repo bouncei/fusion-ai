@@ -10,14 +10,8 @@ import {
 
 export const MAX_FREE_COUNTS = 3
 
-export const TOOLS = [
-    {
-        label: "Dashboard",
-        href: "/dashboard",
-        icon: LayoutDashboard,
-        color: "text-sky-500",
-        bgColor: "text-sky-500/10"
-    },
+export const tools = [
+
 
     {
         label: "Conversation",
@@ -63,11 +57,4 @@ export const TOOLS = [
     },
 
 
-    {
-        label: "Settings",
-        href: "/settings",
-        icon: Settings,
-        color: "",
-        bgColor: ""
-    },
 ];

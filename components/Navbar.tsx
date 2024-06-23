@@ -16,14 +16,15 @@ import Link from "next/link";
 
 interface NavbarProps {
   apiLimitCounts: number;
+  isPro: boolean;
 }
 
-const Navbar = ({ apiLimitCounts }: NavbarProps) => {
+const Navbar = ({ apiLimitCounts = 0, isPro = false }: NavbarProps) => {
   const { setTheme } = useTheme();
 
   return (
     <div className="flex items-center bg-opacity-70  p-4">
-      <MobileSidebar apiLimitCounts={apiLimitCounts} />
+      <MobileSidebar apiLimitCounts={apiLimitCounts} isPro={isPro} />
 
       <div className="w-full space-x-2 flex justify-end">
         <DropdownMenu>

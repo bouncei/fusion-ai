@@ -3,19 +3,87 @@ import { Montserrat } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import {
+  Code,
+  ImageIcon,
+  LayoutDashboard,
+  MessageSquare,
+  Music,
+  Settings,
+  VideoIcon,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import FreeCounter from "./FreeCounter";
-import { TOOLS } from "@/constants";
+// import { tools } from "@/constants";
 
 interface SideBarProps {
   apiLimitCounts: number;
+  isPro: boolean;
 }
 
 const montserrat = Montserrat({ weight: "600", subsets: ["latin"] });
 
-const Sidebar = ({ apiLimitCounts }: SideBarProps) => {
+const tools = [
+  {
+    label: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboard,
+    color: "text-sky-500",
+    bgColor: "text-sky-500/10",
+  },
+
+  {
+    label: "Conversation",
+    href: "/conversation",
+    icon: MessageSquare,
+    color: "text-violet-500",
+    bgColor: "text-violet-500/10",
+  },
+
+  {
+    label: "Code Generation",
+    href: "/code",
+    icon: Code,
+    color: "text-red-500",
+    bgColor: "text-green-500/10",
+  },
+
+  {
+    label: "Image Generation",
+    href: "/image",
+    icon: ImageIcon,
+    color: "text-pink-500",
+    bgColor: "text-pink-500/10",
+  },
+
+  {
+    label: "Music Generation",
+    href: "/music",
+    icon: Music,
+    color: "text-red-500",
+    bgColor: "text-red-500/10",
+  },
+
+  {
+    label: "Video Generation",
+    href: "/video",
+    icon: VideoIcon,
+    color: "text-orange-500",
+    bgColor: "text-orange-500/10",
+  },
+
+  {
+    label: "Settings",
+    href: "/settings",
+    icon: Settings,
+    color: "",
+    bgColor: "",
+  },
+];
+
+const Sidebar = ({ apiLimitCounts = 0, isPro = false }: SideBarProps) => {
   const pathname = usePathname();
   return (
     <div className="space-y-4 py-4 flex flex-col h-full bg-[#111827] text-white">
@@ -31,7 +99,7 @@ const Sidebar = ({ apiLimitCounts }: SideBarProps) => {
         </Link>
 
         <div className="space-y-1">
-          {TOOLS.map((route) => (
+          {tools.map((route) => (
             <Link
               href={route.href}
               key={route.href}
@@ -51,7 +119,7 @@ const Sidebar = ({ apiLimitCounts }: SideBarProps) => {
         </div>
       </div>
 
-      <FreeCounter apiLimitCounts={apiLimitCounts} />
+      <FreeCounter apiLimitCounts={apiLimitCounts} isPro={isPro} />
     </div>
   );
 };

@@ -9,7 +9,7 @@ import {
 } from "./ui/dialog";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { Badge } from "./ui/badge";
-import { TOOLS } from "@/constants";
+import { tools } from "@/constants";
 import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
 import { Check, Zap } from "lucide-react";
@@ -49,7 +49,7 @@ const ProModal = () => {
               access to advanced features, priority support, and more.
             </p>
 
-            {TOOLS.map((tool) => (
+            {tools.map((tool) => (
               <Card
                 key={tool.href}
                 className="p-3 border-black/5 flex items-center justify-between"

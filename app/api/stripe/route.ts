@@ -29,7 +29,8 @@ export async function GET() {
                 customer: userSubscription.stripeCustomerId,
                 return_url: settingsUrl
             })
-            return NextResponse.redirect(JSON.stringify({
+
+            return new NextResponse(JSON.stringify({
                 url: stripeSession.url
             }))
         }
@@ -70,10 +71,6 @@ export async function GET() {
 
 
 
-
-        if (!userSubscription) {
-            return new NextResponse("No subscription found", { status: 404 })
-        }
 
     } catch (error) {
         console.log("[STRIPE_ERROR]", error)

@@ -1,7 +1,7 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { TOOLS } from "@/constants";
+import { tools } from "@/constants";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -22,7 +22,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="px-4 md:px-20 lg:px-32 space-y-4">
-        {TOOLS.map((tool) => (
+        {tools.map((tool) => (
           <Card
             onClick={() => router.push(tool.href)}
             key={tool.href}
