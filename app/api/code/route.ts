@@ -4,6 +4,7 @@ import { OpenAI, } from "openai"
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
 import { increaseApiLimit, checkApiLimit } from "@/lib/api-limit";
+import { checkSubsctiption } from "@/lib/subscription";
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
@@ -35,10 +36,13 @@ export async function POST(req: Request) {
         }
 
         const freeTrial = await checkApiLimit()
+        const isPro = await checkSubsctiption()
 
-        if (!freeTrial) {
+
+        if (!freeTrial && !isPro) {
             return new NextResponse("Free trial has expired", { status: 403 })
         }
+
 
 
         const response = await openai.chat.completions.create({
@@ -46,7 +50,9 @@ export async function POST(req: Request) {
             messages: [instructionMessage, ...messages]
         });
 
-        await increaseApiLimit()
+        if (!isPro) {
+            await increaseApiLimit()
+        }
 
         return NextResponse.json(response.choices[0].message)
 

@@ -71,6 +71,7 @@ const ProModal = () => {
           <Button
             onClick={() => onSubscribe()}
             size="lg"
+            disabled={loading}
             variant="premium"
             className="w-full"
           >

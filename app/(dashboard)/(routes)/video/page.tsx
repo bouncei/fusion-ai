@@ -55,6 +55,8 @@ const VideoPage = () => {
       if (error?.response?.status === 403) {
         toast.error(error.response.data);
         onOpen();
+      } else {
+        toast.error("Something went wrong");
       }
       console.log(error);
     } finally {

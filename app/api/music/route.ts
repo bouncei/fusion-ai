@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import Replicate from "replicate"
 
 import { increaseApiLimit, checkApiLimit } from "@/lib/api-limit";
+import { checkSubsctiption } from "@/lib/subscription";
 
 const replicate = new Replicate({
     auth: process.env.REPLICATE_API_TOKEN!,
@@ -25,8 +26,10 @@ export async function POST(req: Request) {
         }
 
         const freeTrial = await checkApiLimit()
+        const isPro = await checkSubsctiption()
 
-        if (!freeTrial) {
+
+        if (!freeTrial && !isPro) {
             return new NextResponse("Free trial has expired", { status: 403 })
         }
 
@@ -37,8 +40,9 @@ export async function POST(req: Request) {
 
         const response = await replicate.run("riffusion/riffusion:8cf61ea6c56afd61d8f5b9ffd14d7c216c0a93844ce2d82ac1c9ecc9c7f24e05", { input });
 
-        console.log("Music generated", response)
-        await increaseApiLimit()
+        if (!isPro) {
+            await increaseApiLimit()
+        }
 
         return NextResponse.json(response)
 
