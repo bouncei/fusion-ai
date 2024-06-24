@@ -1,39 +1,47 @@
 "use client";
 
-import React from "react";
-import { UserButton } from "@clerk/nextjs";
-import MobileSidebar from "./MobileSidebar";
+import { Montserrat } from "next/font/google";
+import Image from "next/image";
+import Link from "next/link";
+import { useAuth } from "@clerk/nextjs";
 import { Github, Heart, Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
-
+import { Button } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
-import Link from "next/link";
+import { useTheme } from "next-themes";
 
-interface NavbarProps {
-  apiLimitCounts: number;
-  isPro: boolean;
-}
+import { cn } from "@/lib/utils";
 
-const Navbar = ({ apiLimitCounts = 0, isPro = false }: NavbarProps) => {
+const font = Montserrat({
+  weight: "600",
+  subsets: ["latin"],
+});
+
+const LandingNavBar = () => {
   const { setTheme } = useTheme();
+  const { isSignedIn } = useAuth();
 
   return (
-    <div className="flex items-center bg-opacity-70  p-4">
-      <MobileSidebar apiLimitCounts={apiLimitCounts} isPro={isPro} />
+    <div className="p-4 bg-transparent flex items-center justify-between">
+      <Link href="/" className="flex items-center">
+        <div className="relative h-8 w-8 mr-4">
+          <Image fill alt="logo" src="/logo.png" />
+        </div>
 
-      <div className="w-full space-x-2 flex items-center justify-end">
+        <h1 className={cn("text-2xl font-bold", font.className)}>FusionAI</h1>
+      </Link>
+
+      <div className="flex items-center gap-x-2">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -73,16 +81,20 @@ const Navbar = ({ apiLimitCounts = 0, isPro = false }: NavbarProps) => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Button variant="sponsor" asChild className=" rounded-full">
+        <Button variant="sponsor" asChild className="rounded-full">
           <Link href="https://www.patreon.com/user?u=61298522" target="_blank">
             <Heart className="mr-2 h-4 w-4" /> Sponsor
           </Link>
         </Button>
 
-        <UserButton afterSignOutUrl="/" />
+        <Link href={isSignedIn ? "/dashboard" : "/sign-in"}>
+          <Button variant="outline" className="rounded-full">
+            Get Started
+          </Button>
+        </Link>
       </div>
     </div>
   );
 };
 
-export default Navbar;
+export default LandingNavBar;

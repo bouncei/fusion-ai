@@ -46,7 +46,7 @@ const tools = [
     label: "Code Generation",
     href: "/code",
     icon: Code,
-    color: "text-red-500",
+    color: "text-green-500",
     bgColor: "text-green-500/10",
   },
 
