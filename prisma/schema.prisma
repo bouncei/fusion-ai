@@ -33,8 +33,33 @@ model UserSubscription {
   updatedAt              DateTime  @updatedAt
 }
 
-// TODO: CONVERSATION MODEL
-// TODO: CHAT MODEL
-// TODO: IMAGE MODEL
-// TODO: VIDEO MODEL
-// TODO: MUSIC MODEL
+model Conversation {
+  id        String    @id @default(cuid()) @map("_id")
+  userId    String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  messages  Message[]
+}
+
+model Message {
+  id           String       @id @default(cuid()) @map("_id")
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  conversation Conversation @relation(fields: [id], references: [id])
+  senderType   SenderType
+  type         MessageType
+  content      String
+}
+
+enum SenderType {
+  CLIENT
+  AI
+}
+
+enum MessageType {
+  CHAT
+  CODE
+  IMAGE
+  VIDEO
+  MUSIC
+}
