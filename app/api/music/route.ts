@@ -4,6 +4,7 @@ import Replicate from "replicate"
 
 import { increaseApiLimit, checkApiLimit } from "@/lib/api-limit";
 import { checkSubsctiption } from "@/lib/subscription";
+import { addMessageToConversation } from "@/lib/message";
 
 const replicate = new Replicate({
     auth: process.env.REPLICATE_API_TOKEN!,
@@ -38,11 +39,24 @@ export async function POST(req: Request) {
             prompt_b: prompt
         };
 
-        const response = await replicate.run("riffusion/riffusion:8cf61ea6c56afd61d8f5b9ffd14d7c216c0a93844ce2d82ac1c9ecc9c7f24e05", { input });
+        // const response: any = await replicate.run("riffusion/riffusion:8cf61ea6c56afd61d8f5b9ffd14d7c216c0a93844ce2d82ac1c9ecc9c7f24e05", { input });
 
-        if (!isPro) {
-            await increaseApiLimit()
+        // if (!isPro) {
+        //     await increaseApiLimit()
+        // }
+
+        const response = {
+            audio: 'https://replicate.delivery/czjl/Cvcfs4yg9qRBf0bIeScjY9PuGCCUkruriuCneWCVIY94JkIMB/gen_sound.wav',
+            spectrogram: 'https://replicate.delivery/czjl/5yC4r6f21rRzK6m2okYbEeZCVCbors9udDisuNoDfUe7JkIMB/spectrogram.jpg'
         }
+
+        await Promise.all([
+            await addMessageToConversation("MUSIC", "CLIENT", prompt),
+            await addMessageToConversation("MUSIC", "AI", response?.audio)
+        ])
+
+        console.log("AI response", response)
+
 
         return NextResponse.json(response)
 

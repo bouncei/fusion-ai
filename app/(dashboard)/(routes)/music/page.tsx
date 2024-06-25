@@ -1,7 +1,7 @@
 "use client";
 
 import { MessageSquare } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import axios from "axios";
@@ -27,12 +27,40 @@ import { UserAvatar } from "@/components/UserAvatar";
 import BotAvatar from "@/components/BotAvatar";
 import { toast } from "sonner";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { getConversationMessages } from "@/lib/conversation";
+import { SenderType } from "@prisma/client";
 
 const MusicPage = () => {
   const { onOpen } = useProModal();
   const router = useRouter();
 
+  const [loading, setLoading] = useState(false);
+  const [chats, setChats] = useState<
+    | {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        senderType: SenderType;
+        content: string;
+      }[]
+    | undefined
+  >([]);
   const [music, setMusic] = useState<string>();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get("/api/chat?type=MUSIC");
+
+        setChats(response.data);
+      } catch (error: any) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
