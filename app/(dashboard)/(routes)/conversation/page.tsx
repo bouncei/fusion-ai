@@ -28,12 +28,14 @@ import BotAvatar from "@/components/BotAvatar";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { toast } from "sonner";
 
+type FormValues = z.infer<typeof formSchema>;
+
 const ConversationPage = () => {
   const { onOpen } = useProModal();
   const router = useRouter();
 
   const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       prompt: "",
@@ -42,7 +44,7 @@ const ConversationPage = () => {
 
   const isLoading = form.formState.isSubmitting;
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: FormValues) => {
     try {
       const userMessage: ChatCompletionMessageParam = {
         role: "user",
