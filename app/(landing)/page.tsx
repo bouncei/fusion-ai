@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import LandingContent from "@/components/LandingContent";
 import LandingHero from "@/components/LandingHero";
 import LandingNavBar from "@/components/LandingNavBar";
@@ -9,6 +10,7 @@ function LandingPgae() {
       <LandingNavBar />
       <LandingHero />
       <LandingContent />
+      <Footer />
     </div>
   );
 }

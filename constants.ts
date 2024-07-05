@@ -11,8 +11,6 @@ import {
 export const MAX_FREE_COUNTS = 3
 
 export const tools = [
-
-
     {
         label: "Conversation",
         href: "/conversation",

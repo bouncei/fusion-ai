@@ -47,7 +47,7 @@ const Navbar = ({ apiLimitCounts = 0, isPro = false }: NavbarProps) => {
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Help us grow! Star our repo and contribute. ⭐️</p>
+              <p>Help us grow! Star our repo and contribute ⭐️</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

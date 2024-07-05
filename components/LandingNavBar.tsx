@@ -55,7 +55,7 @@ const LandingNavBar = () => {
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Help us grow! Star our repo and contribute. ⭐️</p>
+              <p>Help us grow! Star our repo and contribute ⭐️</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
