@@ -154,7 +154,7 @@ const MusicPage = () => {
 
             {chats?.length !== 0 &&
               !loading &&
-              chats.map((chat: any) => (
+              chats.map((chat) => (
                 <div
                   key={chat.id}
                   className={cn(

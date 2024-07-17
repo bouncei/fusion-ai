@@ -1,7 +1,7 @@
 "use client";
 
 import { MessageSquare, Video } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import axios from "axios";
@@ -27,12 +27,44 @@ import { UserAvatar } from "@/components/UserAvatar";
 import BotAvatar from "@/components/BotAvatar";
 import { toast } from "sonner";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { SenderType } from "@prisma/client";
 
 const VideoPage = () => {
   const { onOpen } = useProModal();
   const router = useRouter();
 
   const [video, setVideo] = useState<string>();
+  const [loading, setLoading] = useState(false);
+  const [chats, setChats] = useState<
+    | {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        senderType: SenderType;
+        content: string;
+      }[]
+    | []
+  >([]);
+
+  const getChats = async () => {
+    try {
+      const response = await axios.get("/api/chat?type=MUSIC");
+
+      await getChats();
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    (async () => {
+      await getChats();
+    })();
+  }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,12 +76,10 @@ const VideoPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setVideo(undefined);
+      // setVideo(undefined);
       const response = await axios.post("/api/video", values);
-      //
 
-      setVideo(response.data[0]);
-
+      await getChats();
       form.reset();
     } catch (error: any) {
       if (error?.response?.status === 403) {

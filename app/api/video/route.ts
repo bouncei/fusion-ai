@@ -4,6 +4,7 @@ import Replicate from "replicate"
 
 import { increaseApiLimit, checkApiLimit } from "@/lib/api-limit";
 import { checkSubsctiption } from "@/lib/subscription";
+import { addMessageToConversation } from "@/lib/message";
 
 
 const replicate = new Replicate({
@@ -38,12 +39,19 @@ export async function POST(req: Request) {
             prompt: prompt
         };
 
-        const response = await replicate.run("anotherjesse/zeroscope-v2-xl:9f747673945c62801b13b84701c783929c0ee784e4748ec062204894dda1a351", { input });
+        const response: any = await replicate.run("anotherjesse/zeroscope-v2-xl:9f747673945c62801b13b84701c783929c0ee784e4748ec062204894dda1a351", { input });
 
 
         if (!isPro) {
             await increaseApiLimit()
         }
+
+
+        await Promise.all([
+            await addMessageToConversation("MUSIC", "CLIENT", prompt),
+            await addMessageToConversation("MUSIC", "AI", response.data[0])
+        ])
+
 
         return NextResponse.json(response)
 

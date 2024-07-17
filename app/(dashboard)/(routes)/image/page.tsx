@@ -36,6 +36,8 @@ import { Card, CardFooter } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { SenderType } from "@prisma/client";
+import { ListMotion } from "@/components/motion/list-motion";
+import SkeletonChatItem from "@/components/skeleton/skeleton-chat-item";
 
 const ImagePage = () => {
   const { onOpen } = useProModal();
@@ -86,7 +88,7 @@ const ImagePage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setImages([]);
+      // setImages([]);
 
       const response = await axios.post("/api/image", values);
       const urls = response.data.map((image: { url: string }) => image.url);
@@ -215,30 +217,60 @@ const ImagePage = () => {
               <Loader />
             </div>
           )}
-          {images.length === 0 && !isLoading && (
+          {chats.length === 0 && !loading && !isLoading && (
             <Empty label="No images generated." />
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
-            {images.map((src) => (
-              <Card key={src} className=" rounded-lg overflow-hidden">
-                <div className="relative aspect-square">
-                  <Image alt="Image" src={src} fill />
-                </div>
+          <ListMotion className="flex flex-col-reverse gap-y-4">
+            {loading &&
+              [0, 0, 0, 0, 0].map((_, index: any) => (
+                <SkeletonChatItem key={index} />
+              ))}
 
-                <CardFooter className="p-2">
-                  <Button
-                    variant="secondary"
-                    className="w-full"
-                    onClick={() => window.open(src)}
-                  >
-                    <Download className="h-4 w-4 mr-2" />
-                    Download
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
+            {chats?.length !== 0 &&
+              !loading &&
+              chats.map((chat) => (
+                <div
+                  key={chat.id}
+                  className={cn(
+                    "p-8 w-full flex items-center gap-x-8 rounded-lg",
+                    chat.senderType === "CLIENT"
+                      ? " border border-black/10"
+                      : "bg-muted"
+                  )}
+                >
+                  {chat.senderType === "CLIENT" ? (
+                    <UserAvatar />
+                  ) : (
+                    <BotAvatar />
+                  )}
+                  {chat.senderType === "CLIENT" ? (
+                    <p className="text-sm">{chat.content}</p>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
+                      {images.map((src) => (
+                        <Card key={src} className=" rounded-lg overflow-hidden">
+                          <div className="relative aspect-square">
+                            <Image alt="Image" src={src} fill />
+                          </div>
+
+                          <CardFooter className="p-2">
+                            <Button
+                              variant="secondary"
+                              className="w-full"
+                              onClick={() => window.open(src)}
+                            >
+                              <Download className="h-4 w-4 mr-2" />
+                              Download
+                            </Button>
+                          </CardFooter>
+                        </Card>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+          </ListMotion>
         </div>
       </div>
     </div>
