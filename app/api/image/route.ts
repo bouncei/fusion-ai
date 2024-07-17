@@ -4,6 +4,7 @@ import { OpenAI } from "openai"
 
 import { increaseApiLimit, checkApiLimit } from "@/lib/api-limit";
 import { checkSubsctiption } from "@/lib/subscription";
+import { addMessageToConversation } from "@/lib/message";
 
 
 
@@ -47,7 +48,8 @@ export async function POST(req: Request) {
             return new NextResponse("Free trial has expired", { status: 403 })
         }
 
-        const response = await openai.images.generate({
+
+        const response: any = await openai.images.generate({
             prompt,
             n: parseInt(amount, 10),
             size: resolution,
@@ -56,6 +58,12 @@ export async function POST(req: Request) {
         if (!isPro) {
             await increaseApiLimit()
         }
+
+
+        await Promise.all([
+            await addMessageToConversation("IMAGE", "CLIENT", prompt),
+            await addMessageToConversation("IMAGE", "AI", response.data)
+        ])
 
 
         return NextResponse.json(response.data)

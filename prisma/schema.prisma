@@ -50,6 +50,7 @@ model Message {
   conversationId String       @db.ObjectId
   senderType     SenderType
   content        String
+  images         String[]
 }
 
 enum SenderType {

@@ -10,21 +10,22 @@ async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const isPro = await checkSubsctiption();
 
   return (
-    <div className="h-full relative">
+    <div className="h-full flex flex-col relative">
       {/* SIDE BAR */}
       <div className="hidden h-full md:flex md:flex-col md:fixed  md:w-72 md:inset-y-0 bg-gray-900">
         <Sidebar apiLimitCounts={apiLimitCounts} isPro={isPro} />
       </div>
-      <main className="md:pl-72  h-full ">
+      <main className="md:pl-72 flex flex-1 flex-col ">
         <div className=" sticky top-0">
           <Navbar apiLimitCounts={apiLimitCounts} isPro={isPro} />
         </div>
 
-        <div className="pb-16">{children}</div>
-        <div className=" w-full  fixed bottom-0 ">
-          <Footer />
-        </div>
+        <div className="pb-10">{children}</div>
       </main>
+
+      <div className="md:pl-72">
+        <Footer />
+      </div>
     </div>
   );
 }

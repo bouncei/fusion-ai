@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import axios from "axios";
@@ -35,11 +35,44 @@ import {
 import { Card, CardFooter } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { SenderType } from "@prisma/client";
 
 const ImagePage = () => {
   const { onOpen } = useProModal();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [chats, setChats] = useState<
+    | {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        senderType: SenderType;
+        content: string;
+      }[]
+    | []
+  >([]);
+
   const [images, setImages] = useState<string[]>([]);
+
+  const getChats = async () => {
+    try {
+      const response = await axios.get("/api/chat?type=IMAGE");
+
+      setChats(response.data);
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    (async () => {
+      await getChats();
+    })();
+  }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

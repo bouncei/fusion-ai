@@ -99,7 +99,7 @@ const LandingNavBar = () => {
 
         <Link href={isSignedIn ? "/dashboard" : "/sign-in"}>
           <Button variant="outline" className="rounded-full text-xs md:text-sm">
-            Get Started
+            {isSignedIn ? "Dashboard" : "Get Started"}
           </Button>
         </Link>
       </div>

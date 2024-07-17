@@ -7,7 +7,7 @@ import { ObjectId } from "bson";
 
 
 
-export const addMessageToConversation = async (conversationType: conversationType, senderType: SenderType, content: string) => {
+export const addMessageToConversation = async (conversationType: conversationType, senderType: SenderType, content: string | string[] | []) => {
     const { userId } = auth()
     const prisma = new PrismaClient();
 
@@ -22,18 +22,16 @@ export const addMessageToConversation = async (conversationType: conversationTyp
         throw new Error("Failed to create or retrieve conversation")
     }
 
-    console.log("Creating message for conversation ID:", newConversation.id)
 
     const newMessage = await prismadb.message.create({
         data: {
-            // id: new ObjectId().toString(),
-
             conversation: {
                 connect: {
                     id: newConversation.id
                 }
             },
-            content,
+            content: typeof content === "string" ? content : "",
+            images: typeof content !== "string" ? content : [],
             senderType,
 
         }

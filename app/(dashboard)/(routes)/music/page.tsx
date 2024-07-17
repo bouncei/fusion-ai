@@ -29,6 +29,9 @@ import { toast } from "sonner";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { getConversationMessages } from "@/lib/conversation";
 import { SenderType } from "@prisma/client";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ListMotion } from "@/components/motion/list-motion";
+import SkeletonChatItem from "@/components/skeleton/skeleton-chat-item";
 
 const MusicPage = () => {
   const { onOpen } = useProModal();
@@ -43,21 +46,25 @@ const MusicPage = () => {
         senderType: SenderType;
         content: string;
       }[]
-    | undefined
+    | []
   >([]);
-  const [music, setMusic] = useState<string>();
+
+  const getChats = async () => {
+    try {
+      const response = await axios.get("/api/chat?type=MUSIC");
+
+      setChats(response.data);
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
+    setLoading(true);
     (async () => {
-      try {
-        const response = await axios.get("/api/chat?type=MUSIC");
-
-        setChats(response.data);
-      } catch (error: any) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
+      await getChats();
     })();
   }, []);
 
@@ -68,15 +75,13 @@ const MusicPage = () => {
     },
   });
 
-  const isLoading = form.formState.isSubmitting;
+  const formLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setMusic(undefined);
       const response = await axios.post("/api/music", values);
 
-      setMusic(response.data.audio);
-
+      await getChats();
       form.reset();
     } catch (error: any) {
       if (error?.response?.status === 403) {
@@ -114,7 +119,7 @@ const MusicPage = () => {
                   <FormItem className="col-span-12 lg:col-span-10">
                     <FormControl className="m-0 p-0">
                       <Input
-                        disabled={isLoading}
+                        disabled={formLoading}
                         placeholder="Piano solo"
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         {...field}
@@ -126,7 +131,7 @@ const MusicPage = () => {
               />
               <Button
                 className="col-span-12 lg:col-span-2"
-                disabled={isLoading}
+                disabled={formLoading}
               >
                 Generate
               </Button>
@@ -135,16 +140,48 @@ const MusicPage = () => {
         </div>
 
         <div className="space-y-4 mt-4">
-          {isLoading && (
+          {formLoading && (
             <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
               <Loader />
             </div>
           )}
-          {!music && !isLoading && <Empty label="No music generated." />}
-          {music && (
-            <audio controls className="w-full mt-8">
-              <source src={music} />
-            </audio>
+
+          <ListMotion className="flex flex-col-reverse gap-y-4">
+            {loading &&
+              [0, 0, 0, 0, 0].map((_, index: any) => (
+                <SkeletonChatItem key={index} />
+              ))}
+
+            {chats?.length !== 0 &&
+              !loading &&
+              chats.map((chat: any) => (
+                <div
+                  key={chat.id}
+                  className={cn(
+                    "p-8 w-full flex items-center gap-x-8 rounded-lg",
+                    chat.senderType === "CLIENT"
+                      ? " border border-black/10"
+                      : "bg-muted"
+                  )}
+                >
+                  {chat.senderType === "CLIENT" ? (
+                    <UserAvatar />
+                  ) : (
+                    <BotAvatar />
+                  )}
+                  {chat.senderType === "CLIENT" ? (
+                    <p className="text-sm">{chat.content}</p>
+                  ) : (
+                    <audio controls className="w-full ">
+                      <source src={chat.content} />
+                    </audio>
+                  )}
+                </div>
+              ))}
+          </ListMotion>
+
+          {chats.length === 0 && !formLoading && !loading && (
+            <Empty label="No music generated." />
           )}
         </div>
       </div>

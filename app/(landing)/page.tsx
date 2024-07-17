@@ -6,10 +6,13 @@ import React from "react";
 
 function LandingPgae() {
   return (
-    <div className="h-full">
-      <LandingNavBar />
-      <LandingHero />
-      <LandingContent />
+    <div className="h-full flex flex-col">
+      <div className="flex flex-1 flex-col">
+        <LandingNavBar />
+        <LandingHero />
+        <LandingContent />
+      </div>
+
       <Footer />
     </div>
   );
