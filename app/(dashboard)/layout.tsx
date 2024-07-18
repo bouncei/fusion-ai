@@ -16,7 +16,7 @@ async function DashboardLayout({ children }: { children: React.ReactNode }) {
         <Sidebar apiLimitCounts={apiLimitCounts} isPro={isPro} />
       </div>
       <main className="md:pl-72 flex flex-1 flex-col ">
-        <div className=" sticky top-0">
+        <div className=" sticky top-0 z-10">
           <Navbar apiLimitCounts={apiLimitCounts} isPro={isPro} />
         </div>
 
