@@ -32,7 +32,7 @@ const LandingNavBar = () => {
   const { isSignedIn } = useAuth();
 
   return (
-    <div className="p-4 sticky top-0  bg-opacity-50  bg-transparent flex items-center justify-between z-10">
+    <div className="p-4 sticky top-0 bg-transparent bg-opacity-30 backdrop-blur-sm  flex items-center justify-between z-10">
       <Link href="/" className="flex items-center">
         <div className="relative size-6 md:h-8 md:w-8 mr-2 md:mr-4">
           <Image fill alt="logo" src="/logo.png" />

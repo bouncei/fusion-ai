@@ -187,8 +187,8 @@ const LandingContent = () => {
     setShowMore(!showMore);
   };
   return (
-    <div className="mx-10 relative ">
-      <h2 className="text-center text-4xl text-white font-extrabold mb-10">
+    <div className="mx-5 md:mx-10 relative ">
+      <h2 className="text-center text-4xl font-extrabold mb-10">
         Testimonaials
       </h2>
       <h2 className="sr-only">Testimonials</h2>

@@ -30,7 +30,7 @@ const Navbar = ({ apiLimitCounts = 0, isPro = false }: NavbarProps) => {
   const { setTheme } = useTheme();
 
   return (
-    <div className="flex items-center bg-opacity-70  p-4">
+    <div className="bg-transparent bg-opacity-30 backdrop-blur-sm  flex items-center  p-4">
       <MobileSidebar apiLimitCounts={apiLimitCounts} isPro={isPro} />
 
       <div className="w-full space-x-2 flex items-center justify-end">
