@@ -86,16 +86,23 @@ const LandingNavBar = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-
-        <Button
-          variant="sponsor"
-          asChild
-          className="rounded-full text-xs md:text-sm"
-        >
-          <Link href="https://www.patreon.com/user?u=61298522" target="_blank">
-            <Heart className="mr-2 h-4 w-4" /> Sponsor
-          </Link>
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="sponsor" asChild className=" rounded-full">
+                <Link
+                  href="https://www.buymeacoffee.com/bouncei"
+                  target="_blank"
+                >
+                  <Heart className="mr-2 h-4 w-4" /> Sponsor
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Buy me a coffee ☕️</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
 
         <Link href={isSignedIn ? "/dashboard" : "/sign-in"}>
           <Button variant="outline" className="rounded-full text-xs md:text-sm">
