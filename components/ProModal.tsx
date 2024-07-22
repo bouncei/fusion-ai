@@ -32,6 +32,8 @@ const ProModal = () => {
       setLoading(false);
     }
   };
+
+  // Pro Modal
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
