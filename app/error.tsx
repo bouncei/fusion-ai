@@ -14,6 +14,7 @@ export default function Error({
     console.error(error);
   }, [error]);
 
+  //   TODO: MAKE MORE CHANGES
   return (
     <div>
       <h2>Something went wrong!</h2>
