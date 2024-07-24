@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+// TODO: implement this component
+
 export default function NotFound() {
   return (
     <div>
