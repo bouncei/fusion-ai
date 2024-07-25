@@ -179,29 +179,44 @@ const testimonials = [
     description: "Innovative and robust. It exceeded our expectations!",
   },
 ];
+/**
+ * LandingContent component displays a list of testimonials with a show more button.
+ *
+ * @returns {JSX.Element} The LandingContent component.
+ */
 
-const LandingContent = () => {
+const LandingContent = (): JSX.Element => {
+  /**
+   * State variable to track whether to show more testimonials.
+   */
   const [showMore, setShowMore] = useState(false);
 
+  /**
+   * Handles the click event of the show more button.
+   */
   const handleShowMore = () => {
     setShowMore(!showMore);
   };
+
   return (
-    <div className="mx-5 md:mx-10 relative ">
+    <div className="mx-5 md:mx-10 relative">
       <h2 className="text-center text-4xl font-extrabold mb-10">
-        Testimonaials
+        Testimonials
       </h2>
       <h2 className="sr-only">Testimonials</h2>
       <div
         className={cn(
-          `grid grid-cols-1 gap-3 lg:gap-5 sm:grid-cols-2 lg:grid-cols-3 `,
+          `grid grid-cols-1 gap-3 lg:gap-5 sm:grid-cols-2 lg:grid-cols-3`,
           showMore ? "max-h-full" : "max-h-[33rem] overflow-hidden"
         )}
       >
+        {/**
+         * Maps over the testimonials array and returns a Card component for each testimonial.
+         */}
         {testimonials.map((testimony) => (
           <Card
             key={testimony.description}
-            className=" bg-slate-200 dark:bg-[#192339]  border-none "
+            className="bg-slate-200 dark:bg-[#192339] border-none"
           >
             <CardHeader>
               <CardTitle className="flex items-center space-x-4">
@@ -210,8 +225,8 @@ const LandingContent = () => {
                   <AvatarFallback>{testimony.name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="text-lg"> {testimony.name}</p>
-                  <p className=" text-muted-foreground tracking-wide text-xs mt-0.5">
+                  <p className="text-lg">{testimony.name}</p>
+                  <p className="text-muted-foreground tracking-wide text-xs mt-0.5">
                     {testimony.title}
                   </p>
                 </div>
@@ -224,8 +239,11 @@ const LandingContent = () => {
           </Card>
         ))}
       </div>
+      {/**
+       * Conditionally renders the show more button.
+       */}
       {!showMore && (
-        <div className=" inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-white pt-32 pb-8 pointer-events-none dark:from-[#030712] absolute">
+        <div className="inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-white pt-32 pb-8 pointer-events-none dark:from-[#030712] absolute">
           <Button
             type="button"
             // variant="secondary"
@@ -238,8 +256,11 @@ const LandingContent = () => {
         </div>
       )}
 
+      {/**
+       * Conditionally renders the okay button.
+       */}
       {showMore && (
-        <div className="inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-white pt-32 pb-10 pointer-events-none dark:from-[#030712]  sticky -mt-52 transition-opacity duration-300 opacity-100">
+        <div className="inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-white pt-32 pb-10 pointer-events-none dark:from-[#030712] sticky -mt-52 transition-opacity duration-300 opacity-100">
           <Button
             onClick={handleShowMore}
             type="button"
