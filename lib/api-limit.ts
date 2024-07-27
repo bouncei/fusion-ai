@@ -1,40 +1,30 @@
 import { auth } from "@clerk/nextjs/server";
-import prismadb from "./prismadb"
-import { MAX_FREE_COUNTS } from "@/constants"
-
-/**
- * Increases the API limit count for the current user.
- *
- * @returns {Promise<void>} A promise that resolves when the API limit count is increased.
- *
- * @example
- * await increaseApiLimit();
- */
+import prismadb from "./prismadb";
+import { MAX_FREE_COUNTS } from "@/constants";
 export const increaseApiLimit = async () => {
-    const { userId } = auth();
+  const { userId } = auth();
 
-    if (!userId) {
-        return;
-    }
+  if (!userId) {
+    return;
+  }
 
-    const userApiLimit = await prismadb.userApiLimit.findUnique({
-        where: {
-            userId
-        }
+  const userApiLimit = await prismadb.userApiLimit.findUnique({
+    where: {
+      userId,
+    },
+  });
+
+  if (userApiLimit) {
+    await prismadb.userApiLimit.update({
+      where: { userId },
+      data: { count: userApiLimit.count + 1 },
     });
-
-    if (userApiLimit) {
-        await prismadb.userApiLimit.update({
-            where: { userId },
-            data: { count: userApiLimit.count + 1 }
-        });
-    } else {
-        await prismadb.userApiLimit.create({
-            data: { userId: userId, count: 1 }
-        });
-    }
+  } else {
+    await prismadb.userApiLimit.create({
+      data: { userId: userId, count: 1 },
+    });
+  }
 };
-
 
 /**
  * Checks if the current user has reached their API limit.
@@ -46,25 +36,24 @@ export const increaseApiLimit = async () => {
  * console.log(hasReachedLimit); // true or false
  */
 export const checkApiLimit = async () => {
-    const { userId } = auth();
+  const { userId } = auth();
 
-    if (!userId) {
-        return false;
-    }
+  if (!userId) {
+    return false;
+  }
 
-    const userApiLimit = await prismadb.userApiLimit.findUnique({
-        where: {
-            userId
-        }
-    });
+  const userApiLimit = await prismadb.userApiLimit.findUnique({
+    where: {
+      userId,
+    },
+  });
 
-    if (!userApiLimit || userApiLimit.count < MAX_FREE_COUNTS) {
-        return true;
-    } else {
-        return false;
-    }
+  if (!userApiLimit || userApiLimit.count < MAX_FREE_COUNTS) {
+    return true;
+  } else {
+    return false;
+  }
 };
-
 
 /**
  * Gets the current API limit count for the current user.
@@ -76,21 +65,21 @@ export const checkApiLimit = async () => {
  * console.log(apiLimitCount); // 0 or a positive integer
  */
 export const getApiLimitCount = async () => {
-    const { userId } = auth();
+  const { userId } = auth();
 
-    if (!userId) {
-        return 0;
-    }
+  if (!userId) {
+    return 0;
+  }
 
-    const userApiLimit = await prismadb.userApiLimit.findUnique({
-        where: {
-            userId
-        }
-    });
+  const userApiLimit = await prismadb.userApiLimit.findUnique({
+    where: {
+      userId,
+    },
+  });
 
-    if (!userApiLimit) {
-        return 0;
-    }
+  if (!userApiLimit) {
+    return 0;
+  }
 
-    return userApiLimit.count;
-}
+  return userApiLimit.count;
+};
