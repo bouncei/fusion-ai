@@ -23,6 +23,7 @@ async function DashboardLayout({ children }: { children: React.ReactNode }) {
         <div className="pb-10">{children}</div>
       </main>
 
+      {/* FOOTER */}
       <div className="md:pl-72">
         <Footer />
       </div>
