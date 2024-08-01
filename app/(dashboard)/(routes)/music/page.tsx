@@ -1,5 +1,13 @@
-"use client";
-
+/**
+ * MusicPage component
+ *
+ * This component allows users to generate music based on a prompt.
+ *
+ * @example
+ * ```jsx
+ * <MusicPage />
+ * ```
+ */
 import { MessageSquare } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -33,6 +41,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ListMotion } from "@/components/motion/list-motion";
 import SkeletonChatItem from "@/components/skeleton/skeleton-chat-item";
 
+/**
+ * MusicPage component
+ *
+ * @returns {JSX.Element} The MusicPage component
+ */
 const MusicPage = () => {
   const { onOpen } = useProModal();
   const router = useRouter();
@@ -49,6 +62,11 @@ const MusicPage = () => {
     | []
   >([]);
 
+  /**
+   * Fetches chat messages from API
+   *
+   * @async
+   */
   const getChats = async () => {
     try {
       const response = await axios.get("/api/chat?type=MUSIC");
@@ -77,6 +95,12 @@ const MusicPage = () => {
 
   const formLoading = form.formState.isSubmitting;
 
+  /**
+   * Handles form submission
+   *
+   * @param {z.infer<typeof formSchema>} values - Form values
+   * @async
+   */
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axios.post("/api/music", values);
